@@ -10,7 +10,7 @@ const createChapter = async (titleChapter, description, urlChapter, animeId) => 
         }
         const newChapter = new Chapter({ titleChapter, description, urlChapter, animeId });
         await newChapter.save();
-        animeFound.chapter.push(newChapter._id);
+        animeFound.chapters.push(newChapter._id);
         await animeFound.save();        
     }catch(error){
         console.log(error);
