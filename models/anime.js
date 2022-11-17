@@ -7,7 +7,7 @@ const AnimeSchema = new Schema({
     urlAnime: { type: String, lowercase: true, required: true },
     category: { type: String, lowercase: true, required: true },
     userOwner: { type: Schema.Types.ObjectId, ref: 'User' }, 
-    chapterAnime:{ type: Schema.Types.ObjectId, ref: 'Chapter' },
+    chapters:[{ type: Schema.Types.ObjectId, ref: 'Chapter' }],
 });
 
 module.exports = mongoose.model('Anime', AnimeSchema);
