@@ -18,7 +18,35 @@ const createAnime = async (title, description, urlAnime, category, userId) => {
     }
     return result;
 }
+const getAnimes = async (req ,res) => {
+    try{
+        const anime = await anime.find();
+        res.json({
+            msg: 'Get Animes',
+            title,
+            description,
+            urlAnime, 
+            category,
+            userId,
+        });
+    }catch(error){
+        res.status(500).send({message: 'Error2', error});
+    }
+};
+
+const getAnimeById = async (_Id) => {
+    let result;
+    try{
+        result = await Anime.findById(_id);
+        return result;
+    }catch(error){
+        throw error;
+    }
+};
 
 module.exports = {
     createAnime,
+    getAnimes,
+    getAnimeById,
+
 }

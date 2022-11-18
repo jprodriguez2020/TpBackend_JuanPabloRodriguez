@@ -10,6 +10,29 @@ const createAnime = async (req, res) => {
     }
 }
 
+const getAnimes = async (req, res) => {
+    try{
+        const animes = await Anime.find();
+        res.status(200).send(animes);
+    }
+    catch(error){
+        res.status(500).send({message: 'Something went wrong', error});
+    }
+};
+
+const getAnimeById = async (req, res) => {
+    const {_Id} = req.params;
+    try{
+        const result = await animeService.getAnimeById(_Id);
+        res.status(200).send(result);
+    }
+    catch(error){
+        res.status(500).send({message: 'Something went wrong', error});
+    }
+};
+
 module.exports = {
     createAnime,
+    getAnimes,
+    getAnimeById,
 }

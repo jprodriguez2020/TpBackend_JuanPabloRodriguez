@@ -13,7 +13,8 @@ routes.post("/register", userSchema, usersController.register);
 routes.post("/hi", isAuth, usersController.sayHi);
 
 routes.post("/anime", animeController.createAnime);
-//routes.get("/anime", animeController.getAnime);
+routes.get("/anime", animeController.getAnimes);
+routes.get("/anime/:animeId", animeController.getAnimeById);
 
 
 // routes.put("/anime/:id", animeController.updateAnime);
