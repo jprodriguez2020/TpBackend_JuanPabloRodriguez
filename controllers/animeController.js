@@ -21,9 +21,9 @@ const getAnimes = async (req, res) => {
 };
 
 const getAnimeById = async (req, res) => {
-    const {_Id} = req.params;
+    const {anime} = req.params;
     try{
-        const result = await animeService.getAnimeById(_Id);
+        const result = await animeService.getAnimeById(anime);
         res.status(200).send(result);
     }
     catch(error){
