@@ -1,5 +1,6 @@
 const { animeService } = require('../services');
 const Anime = require("../models/anime");
+const { default: mongoose } = require('mongoose');
 
 const createAnime = async (req, res) => {
     try{
@@ -21,9 +22,13 @@ const getAnimes = async (req, res) => {
     }
 };
 
+const parseId = (animeId) => {
+  return mongoose.Types.ObjectId(animeId)
+}
+
 const updateAnime = async (req, res) => {
     try {
-      await Anime.updateOne({ _id: req.params.animeid }, { $set: { ...req.body } });
+      await Anime.updateOne({ _id: parseId(req.params.animeId) }, { $set: { ...req.body } });
       res.status(201).send("Anime updated successfully!");
     } catch (error) {
       res.status(500).send("An error occurred while updating the Animes.");
@@ -32,7 +37,7 @@ const updateAnime = async (req, res) => {
   
   const deleteAnime = async (req, res) => {
     try {
-      await Anime.findByIdAndDelete(req.params.animeid);
+      await Anime.deleteOne({ _id: parseId(req.params.animeId) }, { $set: { ...req.body } });
       res.status(201).send("Anime deleted successfully!");
     } catch (error) {
       res.status(500).send("An error occurred while deleting the Animes.");
