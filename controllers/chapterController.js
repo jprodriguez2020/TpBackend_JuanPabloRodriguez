@@ -12,6 +12,10 @@ const createChapter = async (req, res) => {
     }
 }
 
+const parseId = (chapterId) => {
+  return mongoose.Types.ObjectId(chapterId)
+}
+
 const getChapters = async (req, res) => {
     try {
         const { animeId } = req.query;
@@ -22,9 +26,14 @@ const getChapters = async (req, res) => {
     }
 };
 
-const parseId = (chapterId) => {
-  return mongoose.Types.ObjectId(chapterId)
-}
+const getChapterById = async (req, res) => {
+  try {
+    await Chapter.findById({ _id: parseId(req.params.chapterId) });
+    res.status(201).send(result);
+  } catch (error) {
+    res.status(500).send("An error occurred while finding the Chpater.");
+  }
+};
 
 const updateChapter = async (req, res) => {
     try {
@@ -47,6 +56,7 @@ const updateChapter = async (req, res) => {
 module.exports = {
     createChapter,
     getChapters,
+    getChapterById,
     updateChapter,
     deleteChapter
 }

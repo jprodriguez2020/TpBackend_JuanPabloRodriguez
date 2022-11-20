@@ -1,5 +1,6 @@
 const { animeService } = require('../services');
 const Anime = require("../models/anime");
+const Chapter = require("../models/chapter");
 const { default: mongoose } = require('mongoose');
 
 const createAnime = async (req, res) => {
@@ -12,6 +13,10 @@ const createAnime = async (req, res) => {
     }
 };
 
+const parseId = (animeId) => {
+  return mongoose.Types.ObjectId(animeId)
+}
+
 const getAnimes = async (req, res) => {
     try {
         const { category } = req.query;
@@ -22,9 +27,15 @@ const getAnimes = async (req, res) => {
     }
 };
 
-const parseId = (animeId) => {
-  return mongoose.Types.ObjectId(animeId)
-}
+const getAnimeChapters = async (req, res) => {
+  try {
+    const chapters = await Chapter.findAll({ _id: parseId(req.params.animeId) });
+    res.status(200).send({ chapters });
+  } catch (error) {
+    res.status(500).send("An error occurred while finding the Chapters of Id Anime.");
+  }
+};
+
 
 const updateAnime = async (req, res) => {
     try {
@@ -47,7 +58,7 @@ const updateAnime = async (req, res) => {
 module.exports = {
     createAnime,
     getAnimes,
-    //getAnimeById,
+    getAnimeChapters,
     updateAnime,
     deleteAnime
 }
