@@ -1,4 +1,5 @@
 const { animeService } = require('../services');
+const Anime = require("../models/anime");
 
 const createAnime = async (req, res) => {
     try{
@@ -6,33 +7,42 @@ const createAnime = async (req, res) => {
         const result = await animeService.createAnime(title, description, urlAnime, category, userId);
         res.status(201).send(result);
     }catch(error){
-        res.status(500).send("Error registering Anime.")
+        res.status(500).send("Error registering Anime.");
     }
-}
+};
 
 const getAnimes = async (req, res) => {
-    try{
-        const animes = await Anime.find();
-        res.status(200).send(animes);
-    }
-    catch(error){
-        res.status(500).send({message: 'Something went wrong', error});
+    try {
+        const { category } = req.query;
+        const result = await animeService.getAnimes(category);
+        res.status(200).send(result)
+    }catch(error) {
+        res.status(500).send("An error occurred while listing the Animes.");
     }
 };
 
-const getAnimeById = async (req, res) => {
-    const {anime} = req.params;
-    try{
-        const result = await animeService.getAnimeById(anime);
-        res.status(200).send(result);
+const updateAnime = async (req, res) => {
+    try {
+      await Anime.updateOne({ _id: req.params.animeid }, { $set: { ...req.body } });
+      res.status(201).send("Anime updated successfully!");
+    } catch (error) {
+      res.status(500).send("An error occurred while updating the Animes.");
     }
-    catch(error){
-        res.status(500).send({message: 'Something went wrong', error});
+  };
+  
+  const deleteAnime = async (req, res) => {
+    try {
+      await Anime.findByIdAndDelete(req.params.animeid);
+      res.status(201).send("Anime deleted successfully!");
+    } catch (error) {
+      res.status(500).send("An error occurred while deleting the Animes.");
     }
-};
+  };
 
 module.exports = {
     createAnime,
     getAnimes,
-    getAnimeById,
+    //getAnimeById,
+    updateAnime,
+    deleteAnime
 }
